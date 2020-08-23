@@ -5,6 +5,7 @@ import {Button, Modal, ModalHeader, ModalBody,
   Label, Row} from 'reactstrap';
 
 import {LocalForm, Control, Errors} from 'react-redux-form';
+import { addComment } from '../redux/ActionCreators';
 
 const minLength = (len) => (val) => val && val.length>=len
 const maxLength = (len) => (val) => !val || val.length<=len
@@ -29,7 +30,8 @@ class CommentForm extends Component
 
   handleSubmit(values) {
     // console.log('Current State is: ' + JSON.stringify(values));
-    alert('Current State is: ' + JSON.stringify(values));
+    // alert('Current State is: ' + JSON.stringify(values));
+    this.props.addComment(this.props.dishId,values.rating,values.name,values.comment);
     this.toggleModal();
     // event.preventDefault();
   }
@@ -109,7 +111,7 @@ class CommentForm extends Component
   }
 
 
-  function RenderComments({comments}){
+  function RenderComments({comments, addComment, dishId}){
     const comm = comments.map((comment)=>{
       return(
         <div className = "comment-item " key={comment.id}>
@@ -132,14 +134,14 @@ class CommentForm extends Component
             
             {comm}
             
-            <CommentForm/>
+            <CommentForm addComment={addComment} dishId={dishId}/>
           </CardBody>
         </Card>
       </div>
     );
   }
 
-  function DishDetail({dish, comments}){
+  function DishDetail({dish, comments, addComment}){
 
     if (dish != null){
      
@@ -161,7 +163,9 @@ class CommentForm extends Component
               <CardGroup>
                 <RenderDish dish = {dish}/>
 
-                <RenderComments comments = {comments}/>
+                <RenderComments comments = {comments}
+                      addComment={addComment}
+                      dishId={dish.id}/>
               </CardGroup>
             </div>
           </div>
