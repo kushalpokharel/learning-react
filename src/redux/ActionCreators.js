@@ -13,6 +13,7 @@ export const addComment = (dishId,rating,author,comment)=>{
   }
 }
 
+//this is a thunk
 export const fetchDishes = () => (dispatch)=>{
   dispatch(dishesLoading(true));
 
