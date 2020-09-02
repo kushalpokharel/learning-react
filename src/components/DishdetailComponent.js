@@ -6,6 +6,7 @@ import {Button, Modal, ModalHeader, ModalBody,
   import { Loading } from './LoadingComponent';
 
 import {LocalForm, Control, Errors} from 'react-redux-form';
+import { baseUrl } from '../shared/baseUrl';
 
 const minLength = (len) => (val) => val && val.length>=len
 const maxLength = (len) => (val) => !val || val.length<=len
@@ -31,7 +32,7 @@ class CommentForm extends Component
   handleSubmit(values) {
     // console.log('Current State is: ' + JSON.stringify(values));
     // alert('Current State is: ' + JSON.stringify(values));
-    this.props.addComment(this.props.dishId,values.rating,values.name,values.comment);
+    this.props.postComment(this.props.dishId,values.rating,values.name,values.comment);
     this.toggleModal();
     // event.preventDefault();
   }
@@ -101,7 +102,7 @@ class CommentForm extends Component
     return(
       <div className = "col-12 col-md-5 m-1">
       <Card>
-          <CardImg top src={dish.image} alt={dish.name} />
+          <CardImg top src={baseUrl + dish.image} alt={dish.name} />
           <CardBody>
             <CardTitle>{dish.name}</CardTitle>
             <CardText>{dish.description}</CardText>
@@ -112,7 +113,7 @@ class CommentForm extends Component
   }
 
 
-  function RenderComments({comments, addComment, dishId}){
+  function RenderComments({comments, postComment, dishId}){
     const comm = comments.map((comment)=>{
       return(
         <div className = "comment-item " key={comment.id}>
@@ -135,7 +136,7 @@ class CommentForm extends Component
             
             {comm}
             
-            <CommentForm addComment={addComment} dishId={dishId}/>
+            <CommentForm postComment={postComment} dishId={dishId}/>
           </CardBody>
         </Card>
       </div>
@@ -183,7 +184,7 @@ class CommentForm extends Component
                 <RenderDish dish = {props.dish}/>
 
                 <RenderComments comments = {props.comments}
-                      addComment={props.addComment}
+                      postComment={props.postComment}
                       dishId={props.dish.id}/>
               </CardGroup>
             </div>
